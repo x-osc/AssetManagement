@@ -1,4 +1,7 @@
-﻿namespace AssetManagement.Models
+﻿using Microsoft.EntityFrameworkCore;
+using static System.Net.WebRequestMethods;
+
+namespace AssetManagement.Models
 {
     public class Assignment
     {

@@ -3,7 +3,7 @@
 namespace AssetManagement.Models { 
     public class ApplicationUser : IdentityUser
     {
-        public int Id { get; set; }
+        // Id is inherited
         public Person Person { get; set; }
     }
 }

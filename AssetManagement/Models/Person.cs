@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AssetManagement.Models
 {
@@ -12,6 +13,8 @@ namespace AssetManagement.Models
         public string Name { get; set; }
         public PersonRole Role { get; set; }
 
+        public string? UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
         public ApplicationUser? User { get; set; }
     }
 

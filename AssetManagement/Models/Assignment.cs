@@ -11,6 +11,7 @@ namespace AssetManagement.Models
         public int? LocationId { get; set; }
         public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
         public DateTime? ReturnedAt { get; set; }
+        public string? Notes { get; set; }
 
         public Asset Asset { get; set; }
         public Person? Person { get; set; }

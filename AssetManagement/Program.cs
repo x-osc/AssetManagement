@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AssetManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AssetManagementContext") ?? throw new InvalidOperationException("Connection string 'AssetManagementContext' not found.")));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AssetManagementContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AssetManagementContext>().AddDefaultTokenProviders().AddDefaultUI();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -26,6 +26,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

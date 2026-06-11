@@ -25,5 +25,9 @@ namespace AssetManagement.Data
         }
 
         public DbSet<AssetManagement.Models.Asset> Asset { get; set; } = default!;
+        public DbSet<AssetManagement.Models.Assignment> Assignment { get; set; } = default!;
+        public DbSet<AssetManagement.Models.Category> Category { get; set; } = default!;
+        public DbSet<AssetManagement.Models.Location> Location { get; set; } = default!;
+        public DbSet<AssetManagement.Models.MaintenanceAssignment> MaintenanceAssignment { get; set; } = default!;
     }
 }

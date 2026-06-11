@@ -10,23 +10,22 @@ using AssetManagement.Models;
 
 namespace AssetManagement.Controllers
 {
-    public class AssetsController : Controller
+    public class CategoriesController : Controller
     {
         private readonly AssetManagementContext _context;
 
-        public AssetsController(AssetManagementContext context)
+        public CategoriesController(AssetManagementContext context)
         {
             _context = context;
         }
 
-        // GET: Assets
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var assetManagementContext = _context.Asset.Include(a => a.Category);
-            return View(await assetManagementContext.ToListAsync());
+            return View(await _context.Category.ToListAsync());
         }
 
-        // GET: Assets/Details/5
+        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace AssetManagement.Controllers
                 return NotFound();
             }
 
-            var asset = await _context.Asset
-                .Include(a => a.Category)
+            var category = await _context.Category
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (asset == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(asset);
+            return View(category);
         }
 
-        // GET: Assets/Create
+        // GET: Categories/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id");
             return View();
         }
 
-        // POST: Assets/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SerialNumber,Name,CategoryId,PurchaseDate,Notes")] Asset asset)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(asset);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", asset.CategoryId);
-            return View(asset);
+            return View(category);
         }
 
-        // GET: Assets/Edit/5
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace AssetManagement.Controllers
                 return NotFound();
             }
 
-            var asset = await _context.Asset.FindAsync(id);
-            if (asset == null)
+            var category = await _context.Category.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", asset.CategoryId);
-            return View(asset);
+            return View(category);
         }
 
-        // POST: Assets/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SerialNumber,Name,CategoryId,PurchaseDate,Notes")] Asset asset)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
         {
-            if (id != asset.Id)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace AssetManagement.Controllers
             {
                 try
                 {
-                    _context.Update(asset);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AssetExists(asset.Id))
+                    if (!CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace AssetManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", asset.CategoryId);
-            return View(asset);
+            return View(category);
         }
 
-        // GET: Assets/Delete/5
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,35 +124,34 @@ namespace AssetManagement.Controllers
                 return NotFound();
             }
 
-            var asset = await _context.Asset
-                .Include(a => a.Category)
+            var category = await _context.Category
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (asset == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(asset);
+            return View(category);
         }
 
-        // POST: Assets/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var asset = await _context.Asset.FindAsync(id);
-            if (asset != null)
+            var category = await _context.Category.FindAsync(id);
+            if (category != null)
             {
-                _context.Asset.Remove(asset);
+                _context.Category.Remove(category);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AssetExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Asset.Any(e => e.Id == id);
+            return _context.Category.Any(e => e.Id == id);
         }
     }
 }

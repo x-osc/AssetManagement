@@ -75,11 +75,12 @@ namespace AssetManagement.Data
                 };
                 context.AddRange(assignments);
 
-                var mantenanceLogs = new List<MaintenanceAssignment>
+                var maintenanceLogs = new List<MaintenanceAssignment>
                 {
                     new MaintenanceAssignment()
                     {
                         AssetId = assets[0].Id,
+                        TechnicianId = people[0].Id,
                         Notes = "Replaced battery",
                         StartedAt = new DateTime(2025, 6, 1),
                         CompletedAt = new DateTime(2025, 6, 1)
@@ -87,10 +88,12 @@ namespace AssetManagement.Data
                     new MaintenanceAssignment()
                     {
                         AssetId = assets[1].Id,
+                        TechnicianId = people[0].Id,
                         StartedAt = DateTime.UtcNow.AddDays(14),
                         Notes = "Annual hardware inspection",
                     },
                 };
+                context.AddRange(maintenanceLogs);
 
                 context.SaveChanges();
             }

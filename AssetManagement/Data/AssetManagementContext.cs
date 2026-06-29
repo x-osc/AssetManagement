@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AssetManagement.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AssetManagement.Data
 {
-    public class AssetManagementContext : DbContext
+    public class AssetManagementContext : IdentityDbContext
     {
         public AssetManagementContext (DbContextOptions<AssetManagementContext> options)
             : base(options)

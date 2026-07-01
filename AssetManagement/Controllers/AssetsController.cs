@@ -65,7 +65,7 @@ namespace AssetManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", asset.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", asset.CategoryId);
             return View(asset);
         }
 
@@ -82,7 +82,7 @@ namespace AssetManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", asset.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", asset.CategoryId);
             return View(asset);
         }
 

@@ -50,9 +50,9 @@ namespace AssetManagement.Controllers
         // GET: Assignments/Create
         public IActionResult Create()
         {
-            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Id");
-            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Id");
-            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Id");
+            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name");
+            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name");
+            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Name");
             return View();
         }
 
@@ -69,9 +69,9 @@ namespace AssetManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Id", assignment.AssetId);
-            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Id", assignment.LocationId);
-            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Id", assignment.PersonId);
+            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name", assignment.AssetId);
+            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name", assignment.LocationId);
+            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Name", assignment.PersonId);
             return View(assignment);
         }
 

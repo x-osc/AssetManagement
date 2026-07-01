@@ -15,8 +15,9 @@ namespace AssetManagement.Models
 
         [DataType(DataType.Date)]
         public DateTime? PurchaseDate { get; set; }
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string? Notes { get; set; } = "";
-
+            
         public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
         public ICollection<MaintenanceAssignment> MaintenanceLogs { get; set; } = new List<MaintenanceAssignment>();
     }

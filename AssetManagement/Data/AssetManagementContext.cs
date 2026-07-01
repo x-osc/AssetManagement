@@ -17,6 +17,8 @@ namespace AssetManagement.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Assignment>().HasIndex(a => a.AssetId).HasFilter("[ReturnedAt] IS NULL").IsUnique();
 
             modelBuilder.Entity<Assignment>().ToTable(t => t.HasCheckConstraint(

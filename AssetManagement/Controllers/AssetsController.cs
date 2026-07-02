@@ -118,7 +118,7 @@ namespace AssetManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", asset.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", asset.CategoryId);
             return View(asset);
         }
 

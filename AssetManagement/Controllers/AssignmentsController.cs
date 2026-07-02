@@ -88,9 +88,9 @@ namespace AssetManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Id", assignment.AssetId);
-            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Id", assignment.LocationId);
-            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Id", assignment.PersonId);
+            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name", assignment.AssetId);
+            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name", assignment.LocationId);
+            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Name", assignment.PersonId);
             return View(assignment);
         }
 
@@ -126,9 +126,9 @@ namespace AssetManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Id", assignment.AssetId);
-            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Id", assignment.LocationId);
-            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Id", assignment.PersonId);
+            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name", assignment.AssetId);
+            ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name", assignment.LocationId);
+            ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Name", assignment.PersonId);
             return View(assignment);
         }
 

@@ -49,8 +49,8 @@ namespace AssetManagement.Controllers
         // GET: MaintenanceAssignments/Create
         public IActionResult Create()
         {
-            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Id");
-            ViewData["TechnicianId"] = new SelectList(_context.Set<Person>(), "Id", "Id");
+            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name");
+            ViewData["TechnicianId"] = new SelectList(_context.Set<Person>(), "Id", "Name");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace AssetManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Id", maintenanceAssignment.AssetId);
-            ViewData["TechnicianId"] = new SelectList(_context.Set<Person>(), "Id", "Id", maintenanceAssignment.TechnicianId);
+            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name", maintenanceAssignment.AssetId);
+            ViewData["TechnicianId"] = new SelectList(_context.Set<Person>(), "Id", "Name", maintenanceAssignment.TechnicianId);
             return View(maintenanceAssignment);
         }
 
@@ -85,8 +85,8 @@ namespace AssetManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Id", maintenanceAssignment.AssetId);
-            ViewData["TechnicianId"] = new SelectList(_context.Set<Person>(), "Id", "Id", maintenanceAssignment.TechnicianId);
+            ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name", maintenanceAssignment.AssetId);
+            ViewData["TechnicianId"] = new SelectList(_context.Set<Person>(), "Id", "Name", maintenanceAssignment.TechnicianId);
             return View(maintenanceAssignment);
         }
 

@@ -5,6 +5,7 @@
 }
 
 <h1>Details</h1>
+<a asp-action="Index">Back to List</a>
 
 <div>
     <h4>Asset</h4>
@@ -43,6 +44,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <button class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@Model?.Id">Edit</button>
 </div>

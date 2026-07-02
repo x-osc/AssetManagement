@@ -12,9 +12,9 @@ namespace AssetManagement.Models
         public string? Notes { get; set; } = "";
 
         public int AssetId { get; set; }
-        public Asset Asset { get; set; }
+        public Asset? Asset { get; set; }
         public int TechnicianId { get; set; }
         [ForeignKey(nameof(TechnicianId))]
-        public Person Technician { get; set; }
+        public Person? Technician { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace AssetManagement.Models
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string? Notes { get; set; } = "";
 
-        public Asset Asset { get; set; }
+        public Asset? Asset { get; set; }
         public Person? Person { get; set; }
         public Location? Location { get; set; }
     }

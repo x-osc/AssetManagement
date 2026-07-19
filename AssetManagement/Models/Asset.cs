@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AssetManagement.Models
 {
-    [Index(nameof(SerialNumber), IsUnique = true)]
     public class Asset
     {
         public int Id { get; set; }

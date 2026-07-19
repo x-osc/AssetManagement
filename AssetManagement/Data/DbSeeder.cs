@@ -52,7 +52,19 @@ namespace AssetManagement.Data
                 var assets = new List<Asset>
                 {
                     new Asset() { SerialNumber = "001", Name = "HP Elitebook 840", Category = categories[0] }, // Laptop
-                    new Asset() { SerialNumber = "002", Name = "HP ProOne 245 G10", Category = categories[1] }, // Desktop
+                    new Asset() { SerialNumber = "002", Name = "HP Elitebook 840", Category = categories[0] },
+                    new Asset() { SerialNumber = "003", Name = "HP Elitebook 840", Category = categories[0] },
+                    new Asset() { SerialNumber = "004", Name = "HP Elitebook 840", Category = categories[0] },
+
+                    new Asset() { SerialNumber = "001", Name = "HP ProOne 245 G10", Category = categories[1] }, // Desktop
+                    new Asset() { SerialNumber = "002", Name = "HP ProOne 245 G10", Category = categories[1] },
+
+                    new Asset() { SerialNumber = "01", Name = "Projector", Category = categories[2] }, // Projector
+
+                    new Asset() { SerialNumber = "001", Name = "Apple iPad", Category = categories[3] }, // Tablet
+                    new Asset() { SerialNumber = "002", Name = "Apple iPad", Category = categories[3] },
+
+                    new Asset() { SerialNumber = "001", Name = "Brother HL-1210W", Category = categories[4] }, // Printer
                 };
                 context.AddRange(assets);
 

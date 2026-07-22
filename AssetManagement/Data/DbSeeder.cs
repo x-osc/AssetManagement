@@ -54,7 +54,7 @@ namespace AssetManagement.Data
                     new Asset() { SerialNumber = "001", Name = "HP Elitebook 840", Category = categories[0] }, // Laptop
                     new Asset() { SerialNumber = "002", Name = "HP Elitebook 840", Category = categories[0] },
                     new Asset() { SerialNumber = "003", Name = "HP Elitebook 840", Category = categories[0] },
-                    new Asset() { SerialNumber = "004", Name = "HP Elitebook 840", Category = categories[0] },
+                    new Asset() { SerialNumber = "004", Name = "HP Elitebook 840", Category = categories[0], Status = AssetStatus.Retired },
 
                     new Asset() { SerialNumber = "001", Name = "HP ProOne 245 G10", Category = categories[1] }, // Desktop
                     new Asset() { SerialNumber = "002", Name = "HP ProOne 245 G10", Category = categories[1] },
@@ -73,15 +73,15 @@ namespace AssetManagement.Data
                 var assignments = new List<Assignment> {
                     new Assignment()
                     {
-                        AssetId = assets[0].Id,
-                        PersonId = people[0].Id,
+                        Asset = assets[0],
+                        Person = people[0],
                         AssignedAt = new DateTime(2025, 1, 15),
                         ReturnedAt = new DateTime(2026, 1, 15),
                         Notes = "Assigned for teaching duties"
                     },
                     new Assignment() {
-                        AssetId = assets[1].Id,
-                        LocationId = locations[0].Id,
+                        Asset = assets[1],
+                        Location = locations[0],
                         AssignedAt = new DateTime(2025, 2, 1)
                     }
                 };
@@ -91,17 +91,17 @@ namespace AssetManagement.Data
                 {
                     new MaintenanceAssignment()
                     {
-                        AssetId = assets[0].Id,
-                        TechnicianId = people[0].Id,
+                        Asset = assets[0],
+                        Technician = people[0],
                         Notes = "Replaced battery",
                         StartedAt = new DateTime(2025, 6, 1),
                         CompletedAt = new DateTime(2025, 6, 1)
                     },
                     new MaintenanceAssignment()
                     {
-                        AssetId = assets[1].Id,
-                        TechnicianId = people[0].Id,
-                        StartedAt = DateTime.UtcNow.AddDays(14),
+                        Asset = assets[1],
+                        Technician = people[0],
+                        StartedAt = new DateTime(2025, 7, 1),
                         Notes = "Annual hardware inspection",
                     },
                 };

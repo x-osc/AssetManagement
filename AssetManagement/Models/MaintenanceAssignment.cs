@@ -1,5 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+public enum MaintenanceStatus
+{
+    NotStarted,
+    InProgress,
+    Completed
+}
 
 namespace AssetManagement.Models
 {
@@ -16,5 +22,20 @@ namespace AssetManagement.Models
         public int TechnicianId { get; set; }
         [ForeignKey(nameof(TechnicianId))]
         public Person? Technician { get; set; }
+
+        public MaintenanceStatus GetStatus()
+        {
+            if (CompletedAt != null)
+            {
+                return MaintenanceStatus.Completed;
+            }
+
+            if (StartedAt != null)
+            {
+                return MaintenanceStatus.InProgress;
+            }
+
+            return MaintenanceStatus.NotStarted;
+        }
     }
 }

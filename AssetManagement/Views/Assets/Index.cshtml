@@ -21,6 +21,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
+            <th>
+                Asset Status
+            </th>
+            <th>
+                Maintenance Status
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +41,26 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @switch (item.GetStatus())
+                {
+                    case MaintenanceStatus.NotStarted:
+                        <span>Not Started</span>
+                        break;
+                    case MaintenanceStatus.InProgress:
+                        <span>In Progress</span>
+                        break;
+                    case MaintenanceStatus.Completed:
+                        <span>Completed</span>
+                        break;
+                    default:
+                        <span>None</span>
+                        break;
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

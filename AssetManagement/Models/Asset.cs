@@ -14,18 +14,27 @@ namespace AssetManagement.Models
 
         [DataType(DataType.Date)]
         public DateTime? PurchaseDate { get; set; }
+
+        public AssetStatus Status { get; set; } = AssetStatus.Available;
+
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string? Notes { get; set; } = "";
             
         public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
         public ICollection<MaintenanceAssignment> MaintenanceLogs { get; set; } = new List<MaintenanceAssignment>();
+
+        public MaintenanceStatus? GetStatus()
+        {
+            var current = MaintenanceLogs
+                .FirstOrDefault(m => m.CompletedAt == null);
+
+            return current?.GetStatus();
+        }
     }
 
     public enum AssetStatus
     {
         Available,
-        Assigned,
-        Maintenance,
         Retired
     }
 }

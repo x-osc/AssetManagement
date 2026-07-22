@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AssetManagement.Common;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace AssetManagement.Models
@@ -36,5 +37,12 @@ namespace AssetManagement.Models
     {
         Available,
         Retired
+    }
+
+    public class AssetFilter
+    {
+        public string? Search { get; set; }
+        public AssetStatus? Status { get; set; }
+        public SortFilter? Sort { get; set; }
     }
 }

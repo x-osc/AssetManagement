@@ -8,7 +8,7 @@
 
     public class SortFilter
     {
-        public required string Sort { get; set; }
+        public required string SortBy { get; set; }
         public required SortDirection SortDirection { get; set; }
     }
 }

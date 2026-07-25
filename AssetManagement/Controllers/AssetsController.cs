@@ -21,7 +21,7 @@ namespace AssetManagement.Controllers
 
         // GET: Assets
         public async Task<IActionResult> Index()
-        {
+        {           
             var assetManagementContext = _context.Asset.Include(a => a.Category);
             return View(await assetManagementContext.ToListAsync());
         }
@@ -36,6 +36,12 @@ namespace AssetManagement.Controllers
 
             var asset = await _context.Asset
                 .Include(a => a.Category)
+                .Include(a => a.Assignments)
+                    .ThenInclude(a => a.Person)
+                .Include(a => a.Assignments)
+                    .ThenInclude(a => a.Location)
+                .Include(a => a.MaintenanceLogs)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (asset == null)
             {

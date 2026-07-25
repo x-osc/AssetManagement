@@ -31,6 +31,11 @@ namespace AssetManagement.Models
 
             return current?.GetStatus();
         }
+
+        public Assignment? GetAssignment()
+        {
+            return Assignments.FirstOrDefault(a => a.ReturnedAt == null);
+        }
     }
 
     public enum AssetStatus

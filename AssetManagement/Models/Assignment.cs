@@ -18,5 +18,10 @@ namespace AssetManagement.Models
         public Asset? Asset { get; set; }
         public Person? Person { get; set; }
         public Location? Location { get; set; }
+
+        public string? GetAssignedToName()
+        {
+            return Person?.Name ?? Location?.Name;
+        }
     }
 }

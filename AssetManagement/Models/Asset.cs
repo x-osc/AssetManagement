@@ -50,5 +50,10 @@ namespace AssetManagement.Models
         public AssetStatus? Status { get; set; }
         public string? Sort { get; set; }
         public string? Order { get; set; }
+
+        public string? GetNextOrder(string column)
+        {
+            return SortHelper.NextOrder(Sort, Order, column);
+        }
     }
 }

@@ -20,32 +20,63 @@ namespace AssetManagement.Controllers
             _context = context;
         }
 
+        public class AssetIndexViewModel
+        {
+            public List<Asset> Assets { get; set; } = [];
+            public AssetFilter Filter { get; set; } = new AssetFilter();
+        }
+
         // GET: Assets
         public async Task<IActionResult> Index(AssetFilter filter)
         {
             var query = _context.Asset.Include(a => a.Category).AsQueryable();
 
+            ViewData["NameOrder"] = SortHelper.NextOrder(
+                filter.Sort,
+                filter.Order,
+                "name"
+            );
+            ViewData["SerialOrder"] = SortHelper.NextOrder(
+                filter.Sort,
+                filter.Order,
+                "serial"
+            );
+            ViewData["CategoryOrder"] = SortHelper.NextOrder(
+                filter.Sort,
+                filter.Order,
+                "category"
+            );
+            ViewData["StatusOrder"] = SortHelper.NextOrder(
+                filter.Sort,
+                filter.Order,
+                "status"
+            );
+
             switch (filter.Sort) {
                 case "name":
-                    query = query.OrderBy(a => a.Name);
+                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Name) : query.OrderBy(a => a.Name);
                     break;
                 case "serial":
-                    query = query.OrderBy(a => a.SerialNumber);
+                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.SerialNumber) : query.OrderBy(a => a.SerialNumber);
                     break;
                 case "category":
-                    query = query.OrderBy(a => a.Category.Name);
+                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Category.Name) : query.OrderBy(a => a.Category.Name);
                     break;
                 case "status":
-                    query = query.OrderBy(a => a.Status);
+                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Status) : query.OrderBy(a => a.Status);
                     break;
                 default:
-                    query = query.OrderBy(a => a.Id);
+                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Id) : query.OrderBy(a => a.Id);
                     break;
             }
 
-            var assets = await query.ToListAsync();
+            var model = new AssetIndexViewModel
+            {
+                Assets = await query.ToListAsync(),
+                Filter = filter
+            };
 
-            return View(assets);
+            return View(model);
         }
 
         // GET: Assets/Details/5

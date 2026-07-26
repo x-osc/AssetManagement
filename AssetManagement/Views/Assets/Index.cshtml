@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AssetManagement.Models.Asset>
+﻿@model AssetManagement.Controllers.AssetsController.AssetIndexViewModel;
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,24 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sort="serial">
-                    @Html.DisplayNameFor(model => model.SerialNumber)
+                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("serial") == null ? null : "serial")" asp-route-order="@Model.Filter.GetNextOrder("serial")">
+                    @Html.DisplayNameFor(model => model.Assets[0].SerialNumber)
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sort="name">
-                    @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("name") == null ? null : "name")" asp-route-order="@Model.Filter.GetNextOrder("name")">
+                    @Html.DisplayNameFor(model => model.Assets[0].Name)
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sort="category">
-                    @Html.DisplayNameFor(model => model.Category)
+                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("category") == null ? null : "category")" asp-route-order="@Model.Filter.GetNextOrder("category")">
+                    @Html.DisplayNameFor(model => model.Assets[0].Category)
                 </a>
             </th>
             <th>
-                Asset Status
+                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("status") == null ? null : "status")" asp-route-order="@Model.Filter.GetNextOrder("status")">
+                    @Html.DisplayNameFor(model => model.Assets[0].Status)
+                </a>
             </th>
             <th>
                 Maintenance Status
@@ -37,7 +39,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Assets) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.SerialNumber)

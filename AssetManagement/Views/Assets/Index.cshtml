@@ -13,13 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SerialNumber)
+                <a asp-action="Index" asp-route-sort="serial">
+                    @Html.DisplayNameFor(model => model.SerialNumber)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index" asp-route-sort="name">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                <a asp-action="Index" asp-route-sort="category">
+                    @Html.DisplayNameFor(model => model.Category)
+                </a>
             </th>
             <th>
                 Asset Status

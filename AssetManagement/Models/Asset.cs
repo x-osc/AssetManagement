@@ -48,6 +48,7 @@ namespace AssetManagement.Models
     {
         public string? Search { get; set; }
         public AssetStatus? Status { get; set; }
-        public SortFilter? Sort { get; set; }
+        public string? Sort { get; set; }
+        public string? Order { get; set; }
     }
 }

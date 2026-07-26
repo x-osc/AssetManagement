@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AssetManagement.Data;
 using AssetManagement.Models;
+using AssetManagement.Common;
 
 namespace AssetManagement.Controllers
 {
@@ -20,10 +21,32 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Assets
-        public async Task<IActionResult> Index()
-        {           
+        public async Task<IActionResult> Index(AssetFilter filter)
+        {
             var assetManagementContext = _context.Asset.Include(a => a.Category);
-            return View(await assetManagementContext.ToListAsync());
+            var query = _context.Asset.AsQueryable();
+
+            switch (filter.Sort) {
+                case "name":
+                    query = query.OrderBy(a => a.Name);
+                    break;
+                case "serial":
+                    query = query.OrderBy(a => a.SerialNumber);
+                    break;
+                case "category":
+                    query = query.OrderBy(a => a.Category.Name);
+                    break;
+                case "status":
+                    query = query.OrderBy(a => a.Status);
+                    break;
+                default:
+                    query = query.OrderBy(a => a.Id);
+                    break;
+            }
+
+            var assets = await query.ToListAsync();
+
+            return View(assets);
         }
 
         // GET: Assets/Details/5

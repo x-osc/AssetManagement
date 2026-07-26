@@ -23,8 +23,7 @@ namespace AssetManagement.Controllers
         // GET: Assets
         public async Task<IActionResult> Index(AssetFilter filter)
         {
-            var assetManagementContext = _context.Asset.Include(a => a.Category);
-            var query = _context.Asset.AsQueryable();
+            var query = _context.Asset.Include(a => a.Category).AsQueryable();
 
             switch (filter.Sort) {
                 case "name":

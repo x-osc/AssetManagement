@@ -54,7 +54,7 @@ namespace AssetManagement.Controllers
         // GET: Assets/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
             return View();
         }
 
@@ -65,13 +65,22 @@ namespace AssetManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,SerialNumber,Name,CategoryId,PurchaseDate,Notes")] Asset asset)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(asset);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(asset);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", asset.CategoryId);
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", asset.CategoryId);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
             return View(asset);
         }
 
@@ -85,7 +94,7 @@ namespace AssetManagement.Controllers
 
             var asset = await _context.Asset.FindAsync(id);
             if (asset == null)
-            {
+            {   
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", asset.CategoryId);
@@ -97,19 +106,21 @@ namespace AssetManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SerialNumber,Name,CategoryId,PurchaseDate,Notes")] Asset asset)
-        {
+        public async Task<IActionResult> Edit(int id, Asset asset)
+        {   
             if (id != asset.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var assetToUpdate = await _context.Asset.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (await TryUpdateModelAsync<Asset>(assetToUpdate, "", a => a.SerialNumber, a => a.Name, a => a.CategoryId, a => a.PurchaseDate, a => a.Notes))
             {
                 try
                 {
-                    _context.Update(asset);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,14 +133,20 @@ namespace AssetManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error occurred while updating asset: " + ex.Message);
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", asset.CategoryId);
-            return View(asset);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", assetToUpdate.CategoryId);
+            return View(assetToUpdate);
         }
 
         // GET: Assets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -137,11 +154,19 @@ namespace AssetManagement.Controllers
             }
 
             var asset = await _context.Asset
+                .AsNoTracking()
                 .Include(a => a.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (asset == null)
             {
                 return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
             }
 
             return View(asset);
@@ -153,13 +178,20 @@ namespace AssetManagement.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var asset = await _context.Asset.FindAsync(id);
-            if (asset != null)
+            if (asset == null)
             {
-                _context.Asset.Remove(asset);
+                return RedirectToAction(nameof(Index));
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Asset.Remove(asset);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            } catch (DbUpdateException ex) {
+                Console.WriteLine("Error occurred while deleting asset: " + ex.Message);
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
         }
 
         private bool AssetExists(int id)

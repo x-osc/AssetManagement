@@ -11,7 +11,7 @@ namespace AssetManagement.Models
         public string Name { get; set; }
 
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? PurchaseDate { get; set; }

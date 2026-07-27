@@ -9,11 +9,24 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <label>
+                Find by name: <input type="text" name="search" value="@Model.Filter.Search" />
+            </label>
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("serial") == null ? null : "serial")" asp-route-order="@Model.Filter.GetNextOrder("serial")">
+                <a asp-action="Index" asp-route-search="@Model.Filter.Search" asp-route-sort="@(Model.Filter.GetNextOrder("serial") == null ? null : "serial")" asp-route-order="@Model.Filter.GetNextOrder("serial")">
                     @Html.DisplayNameFor(model => model.Assets[0].SerialNumber)
 
                     @if (Model.Filter.Sort == "serial")
@@ -23,7 +36,7 @@
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("name") == null ? null : "name")" asp-route-order="@Model.Filter.GetNextOrder("name")">
+                <a asp-action="Index" asp-route-search="@Model.Filter.Search" asp-route-sort="@(Model.Filter.GetNextOrder("name") == null ? null : "name")" asp-route-order="@Model.Filter.GetNextOrder("name")">
                     @Html.DisplayNameFor(model => model.Assets[0].Name)
 
                     @if (Model.Filter.Sort == "name")
@@ -33,7 +46,7 @@
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("category") == null ? null : "category")" asp-route-order="@Model.Filter.GetNextOrder("category")">
+                <a asp-action="Index" asp-route-search="@Model.Filter.Search" asp-route-sort="@(Model.Filter.GetNextOrder("category") == null ? null : "category")" asp-route-order="@Model.Filter.GetNextOrder("category")">
                     @Html.DisplayNameFor(model => model.Assets[0].Category)
 
                     @if (Model.Filter.Sort == "category")
@@ -43,7 +56,7 @@
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sort="@(Model.Filter.GetNextOrder("status") == null ? null : "status")" asp-route-order="@Model.Filter.GetNextOrder("status")">
+                <a asp-action="Index" asp-route-search="@Model.Filter.Search" asp-route-sort="@(Model.Filter.GetNextOrder("status") == null ? null : "status")" asp-route-order="@Model.Filter.GetNextOrder("status")">
                     @Html.DisplayNameFor(model => model.Assets[0].Status)
 
                     @if (Model.Filter.Sort == "status")

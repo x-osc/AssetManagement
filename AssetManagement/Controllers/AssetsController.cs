@@ -31,26 +31,10 @@ namespace AssetManagement.Controllers
         {
             var query = _context.Asset.Include(a => a.Category).AsQueryable();
 
-            ViewData["NameOrder"] = SortHelper.NextOrder(
-                filter.Sort,
-                filter.Order,
-                "name"
-            );
-            ViewData["SerialOrder"] = SortHelper.NextOrder(
-                filter.Sort,
-                filter.Order,
-                "serial"
-            );
-            ViewData["CategoryOrder"] = SortHelper.NextOrder(
-                filter.Sort,
-                filter.Order,
-                "category"
-            );
-            ViewData["StatusOrder"] = SortHelper.NextOrder(
-                filter.Sort,
-                filter.Order,
-                "status"
-            );
+            if (!String.IsNullOrEmpty(filter.Search))
+            {
+                query = query.Where(a => a.Name.Contains(filter.Search) || a.SerialNumber.Contains(filter.Search));
+            }
 
             switch (filter.Sort) {
                 case "name":

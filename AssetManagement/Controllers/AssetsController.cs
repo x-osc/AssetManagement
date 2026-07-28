@@ -24,6 +24,23 @@ namespace AssetManagement.Controllers
         {
             public List<Asset> Assets { get; set; } = [];
             public AssetFilter Filter { get; set; } = new AssetFilter();
+            public int TotalItems { get; set; }
+            public int TotalPages { get; set; }
+        }
+
+        public class AssetFilter
+        {
+            public string? Search { get; set; }
+            public AssetStatus? Status { get; set; }
+            public string? Sort { get; set; }
+            public string? Order { get; set; }
+
+            public int Page { get; set; } = 1;
+
+            public string? GetNextOrder(string column)
+            {
+                return SortHelper.NextOrder(Sort, Order, column);
+            }
         }
 
         // GET: Assets
@@ -54,10 +71,27 @@ namespace AssetManagement.Controllers
                     break;
             }
 
+            var totalItems = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItems / 5.0);
+
+            if (filter.Page < 1)
+            {
+                filter.Page = 1;
+            }
+
+            if (totalPages > 0 && filter.Page > totalPages)
+            {
+                filter.Page = totalPages;
+            }
+
+            query = query.Skip((filter.Page - 1) * 5).Take(5);
+
             var model = new AssetIndexViewModel
             {
                 Assets = await query.ToListAsync(),
-                Filter = filter
+                Filter = filter,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
             };
 
             return View(model);

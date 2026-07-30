@@ -46,7 +46,14 @@ namespace AssetManagement.Controllers
         // GET: Assets
         public async Task<IActionResult> Index(AssetFilter filter)
         {
-            var query = _context.Asset.Include(a => a.Category).AsQueryable();
+            var query = _context.Asset
+                .Include(a => a.Category)
+                .Include(a => a.MaintenanceLogs)
+                .Include(a => a.Assignments)
+                    .ThenInclude(a => a.Person)
+                .Include(a => a.Assignments)
+                    .ThenInclude(a => a.Location)
+                .AsQueryable();
 
             if (!String.IsNullOrEmpty(filter.Search))
             {

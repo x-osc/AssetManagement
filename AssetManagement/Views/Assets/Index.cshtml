@@ -66,6 +66,9 @@
                 </a>
             </th>
             <th>
+                Assigned To
+            </th>
+            <th>
                 Maintenance Status
             </th>
             <th></th>
@@ -85,6 +88,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @(item.GetAssignment()?.GetAssignedToName() ?? "None")
             </td>
             <td>
                 @switch (item.GetStatus())

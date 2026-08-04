@@ -46,8 +46,8 @@
         </dt>
         <dd class="col-sm-10">
             <div>
-                @(Model.GetAssignment()?.GetAssignedToName()) - Assigned on 
-                @(Model.GetAssignment()?.AssignedAt)
+                @(Model.CurrentAssignment?.GetAssignedToName()) - Assigned on 
+                @(Model.CurrentAssignment?.AssignedAt)
             </div>
         </dd>
     </dl>

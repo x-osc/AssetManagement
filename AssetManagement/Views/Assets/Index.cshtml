@@ -66,10 +66,24 @@
                 </a>
             </th>
             <th>
-                Assigned To
+                <a asp-action="Index" asp-route-search="@Model.Filter.Search" asp-route-sort="@(Model.Filter.GetNextOrder("assignment") == null ? null : "assignment")" asp-route-order="@Model.Filter.GetNextOrder("assignment")">
+                    @Html.DisplayNameFor(model => model.Assets[0].CurrentAssignment)
+
+                    @if (Model.Filter.Sort == "assignment")
+                    {
+                        @(Model.Filter.Order == "asc" ? "↓" : "↑")
+                    }
+                </a>
             </th>
             <th>
-                Maintenance Status
+                <a asp-action="Index" asp-route-search="@Model.Filter.Search" asp-route-sort="@(Model.Filter.GetNextOrder("maintenance") == null ? null : "maintenance")" asp-route-order="@Model.Filter.GetNextOrder("maintenance")">
+                    @Html.DisplayNameFor(model => model.Assets[0].MaintenanceStatus) 
+
+                    @if (Model.Filter.Sort == "maintenance")
+                    {
+                        @(Model.Filter.Order == "asc" ? "↓" : "↑")
+                    }
+                </a>
             </th>
             <th></th>
         </tr>
@@ -90,10 +104,10 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @(item.GetAssignment()?.GetAssignedToName() ?? "None")
+                @(item.CurrentAssignment?.GetAssignedToName() ?? "None")
             </td>
             <td>
-                @switch (item.GetStatus())
+                @switch (item.MaintenanceStatus)
                 {
                     case MaintenanceStatus.NotStarted:
                         <span>Not Started</span>

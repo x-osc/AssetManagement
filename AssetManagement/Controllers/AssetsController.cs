@@ -60,21 +60,30 @@ namespace AssetManagement.Controllers
                 query = query.Where(a => a.Name.Contains(filter.Search) || a.SerialNumber.Contains(filter.Search));
             }
 
+            var assetList = query.ToList();
+            IEnumerable<Asset> assetListSorted;
+
             switch (filter.Sort) {
                 case "name":
-                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Name) : query.OrderBy(a => a.Name);
+                    assetListSorted = filter.Order == "desc" ? assetList.OrderByDescending(a => a.Name) : assetList.OrderBy(a => a.Name);
                     break;
                 case "serial":
-                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.SerialNumber) : query.OrderBy(a => a.SerialNumber);
+                    assetListSorted = filter.Order == "desc" ? assetList.OrderByDescending(a => a.SerialNumber) : assetList.OrderBy(a => a.SerialNumber);
                     break;
                 case "category":
-                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Category.Name) : query.OrderBy(a => a.Category.Name);
+                    assetListSorted = filter.Order == "desc" ? assetList.OrderByDescending(a => a.Category.Name) : assetList.OrderBy(a => a.Category.Name);
                     break;
                 case "status":
-                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Status) : query.OrderBy(a => a.Status);
+                    assetListSorted = filter.Order == "desc" ? assetList.OrderByDescending(a => a.Status) : assetList.OrderBy(a => a.Status);
+                    break;
+                case "assignment":
+                    assetListSorted = filter.Order == "desc" ? assetList.OrderByDescending(a => a.CurrentAssignment?.GetAssignedToName()) : assetList.OrderBy(a => a.CurrentAssignment?.GetAssignedToName());
+                    break;
+                case "maintenance":
+                    assetListSorted = filter.Order == "desc" ? assetList.OrderByDescending(a => a.MaintenanceStatus) : assetList.OrderBy(a => a.MaintenanceStatus);
                     break;
                 default:
-                    query = filter.Order == "desc" ? query.OrderByDescending(a => a.Id) : query.OrderBy(a => a.Id);
+                    assetListSorted = filter.Order == "desc" ? assetList.OrderByDescending(a => a.Id) : assetList.OrderBy(a => a.Id);
                     break;
             }
 
@@ -91,11 +100,11 @@ namespace AssetManagement.Controllers
                 filter.Page = totalPages;
             }
 
-            query = query.Skip((filter.Page - 1) * 5).Take(5);
+            assetListSorted = assetListSorted.Skip((filter.Page - 1) * 5).Take(5);
 
             var model = new AssetIndexViewModel
             {
-                Assets = await query.ToListAsync(),
+                Assets = assetListSorted.ToList(),
                 Filter = filter,
                 TotalItems = totalItems,
                 TotalPages = totalPages,

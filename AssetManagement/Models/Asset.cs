@@ -8,12 +8,16 @@ namespace AssetManagement.Models
     {
         public int Id { get; set; }
         public string SerialNumber { get; set; }
+        [Required]
+        [StringLength(80)]
         public string Name { get; set; }
 
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Purchase Date")]
         public DateTime? PurchaseDate { get; set; }
 
         public AssetStatus Status { get; set; } = AssetStatus.Available;
@@ -24,17 +28,25 @@ namespace AssetManagement.Models
         public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
         public ICollection<MaintenanceAssignment> MaintenanceLogs { get; set; } = new List<MaintenanceAssignment>();
 
-        public MaintenanceStatus? GetStatus()
+        [Display(Name = "Maintenance Status")]
+        public MaintenanceStatus? MaintenanceStatus
         {
-            var current = MaintenanceLogs
-                .FirstOrDefault(m => m.CompletedAt == null);
+            get
+            {
+                var current = MaintenanceLogs
+                    .FirstOrDefault(m => m.CompletedAt == null);
 
-            return current?.GetStatus();
+                return current?.GetStatus();
+            }
         }
 
-        public Assignment? GetAssignment()
+        [Display(Name = "Assigned To")]
+        public Assignment? CurrentAssignment
         {
-            return Assignments.FirstOrDefault(a => a.ReturnedAt == null);
+            get
+            {
+                return Assignments.FirstOrDefault(a => a.ReturnedAt == null);
+            }
         }
     }
 

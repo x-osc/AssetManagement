@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AssetManagement.Data;
+using AssetManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AssetManagement.Data;
-using AssetManagement.Models;
+using NuGet.ContentModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AssetManagement.Controllers
 {
@@ -48,12 +49,22 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Assignments/Create
-        public IActionResult Create()
+        public IActionResult Create(int? assetId, string? returnUrl)
         {
             ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name");
             ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name");
             ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Name");
-            return View();
+
+            var model = new Assignment();
+
+            if (assetId != null)
+            {
+                model.AssetId = assetId.Value;
+            }
+            ViewData["Asset"] = _context.Asset.FirstOrDefault(a => a.Id == assetId);
+            ViewData["ReturnUrl"] = returnUrl;
+
+            return View(model);
         }
 
         // POST: Assignments/Create
@@ -61,18 +72,81 @@ namespace AssetManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AssetId,PersonId,LocationId,AssignedAt,ReturnedAt,Notes")] Assignment assignment)
+        public async Task<IActionResult> Create([Bind("Id,AssetId,PersonId,LocationId,AssignedAt,ReturnedAt,Notes")] Assignment assignment, string? returnUrl)
         {
             if (ModelState.IsValid)
             {
+                var asset = await _context.Asset
+                    .Include(a => a.Assignments)
+                    .FirstOrDefaultAsync(a => a.Id == assignment.AssetId);
+                if (asset != null && asset.CurrentAssignment != null)
+                {
+                    ModelState.AddModelError(string.Empty, "This asset is already assigned.");
+                    ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name", assignment.AssetId);
+                    ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name", assignment.LocationId);
+                    ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Name", assignment.PersonId);
+                    return View(assignment);
+                }
                 _context.Add(assignment);
                 await _context.SaveChangesAsync();
+                
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return LocalRedirect(returnUrl);
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name", assignment.AssetId);
             ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name", assignment.LocationId);
             ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Name", assignment.PersonId);
             return View(assignment);
+        }
+
+        public async Task<IActionResult> Return(int? id, string? returnUrl)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var assignment = await _context.Assignment
+                .Include(a => a.Asset)
+                .Include(a => a.Location)
+                .Include(a => a.Person)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (assignment == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["ReturnUrl"] = returnUrl;
+
+            return View(assignment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Return(int id, string? returnUrl)
+        {
+            var assignment = await _context.Assignment.FindAsync(id);
+            if (assignment == null)
+            {
+                return NotFound();
+            }
+
+            if (assignment.ReturnedAt == null)
+            {
+                assignment.ReturnedAt = DateTime.UtcNow;
+                _context.Update(assignment);
+                await _context.SaveChangesAsync();
+            }
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Assignments/Edit/5

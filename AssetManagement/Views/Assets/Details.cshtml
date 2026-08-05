@@ -45,12 +45,16 @@
             @Html.DisplayNameFor(model => model.Assignments)
         </dt>
         <dd class="col-sm-10">
-            <div>
-                @(Model.CurrentAssignment?.GetAssignedToName()) - Assigned on 
-                @(Model.CurrentAssignment?.AssignedAt)
-            </div>
+            @if (Model.CurrentAssignment != null)
+            {
+                <div>
+                    @(Model.CurrentAssignment?.GetAssignedToName()) - Assigned on 
+                    @(Model.CurrentAssignment?.AssignedAt)
+                </div>
+            }
         </dd>
     </dl>
+    <hr />
 </div>
 <div>
     <button class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@Model?.Id">Edit</button>

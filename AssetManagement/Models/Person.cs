@@ -10,7 +10,7 @@ namespace AssetManagement.Models
     {
         public int Id { get; set; }
         [MaxLength(8)]
-        public string AcNumber { get; set; }
+        public string? AcNumber { get; set; }
         public string Name { get; set; }
         public PersonRole Role { get; set; }
 

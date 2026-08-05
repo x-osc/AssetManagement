@@ -7,9 +7,13 @@ namespace AssetManagement.Models
     public class Asset
     {
         public int Id { get; set; }
+
+        [Display(Name = "Serial Number")]
+        [StringLength(50)]
         public string SerialNumber { get; set; }
+
         [Required]
-        [StringLength(80)]
+        [StringLength(20)]
         public string Name { get; set; }
 
         public int CategoryId { get; set; }

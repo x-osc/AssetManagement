@@ -1,0 +1,23 @@
+﻿@model AssetManagement.Controllers.DashboardController.DashboardViewModel;
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Dashboard</h1>
+
+<div>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Total Assets</h5>
+            <span>@Model.TotalAssets</span>
+        </div>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Available</h5>
+            <span>@Model.AvailableAssets</span>
+        </div>
+    </div>
+</div>

@@ -59,7 +59,10 @@
         <dd class="col-sm-10">
             @foreach (var assignment in Model.Assignments.Reverse())
             {
-                <div>@assignment.GetAssignedToName(): @assignment.AssignedAt - @assignment.ReturnedAt</div>
+                <div>
+                    @assignment.GetAssignedToName(): @assignment.AssignedAt - @assignment.ReturnedAt 
+                     | <a asp-controller="Assignments" asp-action="Details" asp-route-id="@assignment.Id">View Details</a>
+                </div>
             }
         </dd>
     </dl>

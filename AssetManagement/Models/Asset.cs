@@ -22,7 +22,7 @@ namespace AssetManagement.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Purchase Date")]
-        public DateTime? PurchaseDate { get; set; }
+        public DateTime? PurchaseDate { get; set; } 
 
         public AssetStatus Status { get; set; } = AssetStatus.Available;
 

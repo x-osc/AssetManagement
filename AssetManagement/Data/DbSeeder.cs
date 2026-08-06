@@ -74,16 +74,16 @@ namespace AssetManagement.Data
                     new Assignment()
                     {
                         Asset = assets[0],
-                        Person = people[0],
-                        AssignedAt = new DateTime(2025, 2, 15),
-                        Notes = "Assigned for teaching duties"
+                        Person = people[2],
+                        AssignedAt = new DateTime(2024, 3, 15),
+                        ReturnedAt = new DateTime(2025, 1, 2),
                     },
                     new Assignment()
                     {
                         Asset = assets[0],
-                        Person = people[2],
-                        AssignedAt = new DateTime(2024, 3, 15),
-                        ReturnedAt = new DateTime(2025, 1, 2),
+                        Person = people[0],
+                        AssignedAt = new DateTime(2025, 2, 15),
+                        Notes = "Assigned for teaching duties"
                     },
                     new Assignment()
                     {

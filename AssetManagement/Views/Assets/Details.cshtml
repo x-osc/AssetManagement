@@ -64,15 +64,23 @@
         </dd>
     </dl>
     <hr />
-    <a asp-controller="Assignments"
-       asp-action="Return"
-       asp-route-id="@Model?.CurrentAssignment?.Id"
-       asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")"
-       
-       class="btn btn-primary btn-sm"
-    >
-        Return Current Assignment
-    </a>
+    @if (Model?.CurrentAssignment != null)
+    {
+        <a asp-controller="Assignments"
+           asp-action="Return"
+           asp-route-id="@Model?.CurrentAssignment?.Id"
+           asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")"
+           class="btn btn-primary btn-sm"
+        >
+            Return Current Assignment
+        </a>
+    } else
+    {
+        <a class="btn btn-primary btn-sm disabled">
+            Return Current Assignment
+        </a>
+    }
+
     <a 
         asp-controller="Assignments" 
         asp-action="Create" 
@@ -82,6 +90,23 @@
     >
         + Add Assignment
     </a>
+
+    @* @if (Model?.CurrentAssignment != null)
+    {
+        <a asp-controller="Assignments"
+           asp-action="Create"
+           asp-route-assetId="@Model?.Id"
+           asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")"
+           class="btn btn-primary btn-sm">
+            + Add Assignment
+        </a>
+    }
+    else
+    {
+        <a class="btn btn-primary btn-sm disabled">
+            Return Current Assignment
+        </a>
+    } *@
 </div>
 <div>
     <button class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@Model?.Id">Edit</button>

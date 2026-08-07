@@ -128,6 +128,7 @@ namespace AssetManagement.Controllers
                 .Include(a => a.Assignments)
                     .ThenInclude(a => a.Location)
                 .Include(a => a.MaintenanceLogs)
+                    .ThenInclude(m => m.Technician)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (asset == null)

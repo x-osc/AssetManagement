@@ -44,6 +44,15 @@ namespace AssetManagement.Models
             }
         }
 
+        [Display(Name = "Maintenance Assignment")]
+        public MaintenanceAssignment? CurrentMaintenance
+        {
+            get
+            {
+                return MaintenanceLogs.FirstOrDefault(m => m.CompletedAt == null);
+            }
+        }
+
         [Display(Name = "Assigned To")]
         public Assignment? CurrentAssignment
         {

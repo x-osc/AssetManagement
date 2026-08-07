@@ -65,6 +65,36 @@
                 </div>
             }
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CurrentMaintenance)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.CurrentMaintenance != null)
+            {
+                <div>
+                    @(Model.CurrentMaintenance?.Technician?.Name) - Assigned on
+                    @(Model.CurrentMaintenance?.StartedAt)
+                </div>
+            }   
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaintenanceStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaintenanceStatus)
+        </dd>
+        <dt class="col-sm-2">
+            Maintenance History
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var maintenance in Model.MaintenanceLogs.Reverse())
+            {
+                <div>
+                    @maintenance.Technician.Name: @maintenance.StartedAt - @maintenance.CompletedAt
+                    | <a asp-controller="MaintenanceAssignments" asp-action="Details" asp-route-id="@maintenance.Id">View Details</a>
+                </div>
+            }
+        </dd>
     </dl>
     <hr />
     @if (Model?.CurrentAssignment != null)

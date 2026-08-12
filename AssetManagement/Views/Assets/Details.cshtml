@@ -117,7 +117,8 @@
     <a 
         asp-controller="Assignments" 
         asp-action="Create" 
-        asp-route-assetId="@Model?.Id" 
+        asp-route-assetId="@Model?.Id"
+        asp-route-date="@DateTime.Now"
         asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")"
         class="btn btn-primary btn-sm"
     >

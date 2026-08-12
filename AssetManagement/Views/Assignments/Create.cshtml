@@ -8,6 +8,10 @@
 
 <h4>Assignment</h4>
 <hr />
+@if (ViewData["Date"] != null)
+{
+    <p>Assigned Date: @ViewData["Date"]</p>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -37,11 +41,17 @@
                     <option value="">None</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label asp-for="AssignedAt" class="control-label"></label>
-                <input asp-for="AssignedAt" class="form-control" />
-                <span asp-validation-for="AssignedAt" class="text-danger"></span>
-            </div>
+            @if (ViewData["Date"] != null)
+            {
+                <input type="hidden" asp-for="AssignedAt" value="@ViewData["Date"]" />
+            } else
+            {
+                <div class="form-group">
+                    <label asp-for="AssignedAt" class="control-label"></label>
+                    <input asp-for="AssignedAt" class="form-control" />
+                    <span asp-validation-for="AssignedAt" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>
                 <input asp-for="Notes" class="form-control" />

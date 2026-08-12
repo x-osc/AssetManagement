@@ -49,7 +49,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Assignments/Create
-        public IActionResult Create(int? assetId, string? returnUrl)
+        public IActionResult Create(int? assetId, DateTime date, string? returnUrl)
         {
             ViewData["AssetId"] = new SelectList(_context.Asset, "Id", "Name");
             ViewData["LocationId"] = new SelectList(_context.Set<Location>(), "Id", "Name");
@@ -63,6 +63,7 @@ namespace AssetManagement.Controllers
             }
             ViewData["Asset"] = _context.Asset.FirstOrDefault(a => a.Id == assetId);
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["Date"] = date;
 
             return View(model);
         }
